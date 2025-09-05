@@ -1,0 +1,50 @@
+# Ignore virtual environment
+venv/
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore VS Code settings (optional)
+.vscode/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore logs and temp files
+*.log
+*.tmp
+
+# Ignore any CSV or output files you don't want in version control
+checksum_verification_results.csv
+
+# Ignore all TIFF image data
+*.tiff
+
+# Ignore h5
+# *.h5
+
+# Ignore PDF
+*.pdf
+
+# Ignore folders if needed
+BAS/
+EBO/
+EOS/
+KSC/
+LYA/
+LYT/
+MMZ/
+MOB/
+MON/
+MYB/
+MYO/
+NGB/
+NGS/
+PMB/
+PMO/
