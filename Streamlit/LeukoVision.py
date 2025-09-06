@@ -1,23 +1,25 @@
 import streamlit as st
-import pandas as pd
-import torch
+from streamlit_image_select import image_select
 from PIL import Image
-import numpy as np
-import torchvision.transforms as transforms
+import torch
+from utils import make_gradcam_heatmap,get_canny_edge
+import torchvision.models as models
 from torchvision.models import Inception_V3_Weights
 import torch.nn.functional as F
-from utils import show_importance_inception,show_importance_resnet,get_canny_edge
+import torch.nn as nn
 import cv2
+import numpy as np
 import matplotlib.pyplot as plt
-from streamlit_image_select import image_select
+
 
 st.title("LeukoVision")
 class_names=['BAS','EOS','EBO','IG','LYT','MON','NGS','PLA']
+
 inception_model = torch.load('inceptionv3.pth',weights_only=False,map_location=torch.device('cpu'))
 if isinstance(inception_model, torch.nn.DataParallel):
     inception_model = inception_model.module
 
-resnet_model=torch.load('resnet_model_free_lastlayer.pth',weights_only=False,map_location=torch.device('cpu'))
+resnet_model=torch.load('resnet_model.pth',weights_only=False,map_location=torch.device('cpu'))
 if isinstance(resnet_model, torch.nn.DataParallel):
     resnet_model = resnet_model.module
 
@@ -31,61 +33,68 @@ selected_model_name = st.selectbox("Choose a model", list(models.keys()))
 selected_model = models[selected_model_name]
 
 st.write(f"### You selected: {selected_model_name}")
-#st.write(selected_model)
-col1, col2 = st.columns(2)
 
-#with col1:
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
-#with col2:
+
 gallery = {
     "BAS": ['./gallary/BA_580.jpg','./gallary/BA_19779.jpg','./gallary/BA_20201.jpg'],
     "EOS": ['./gallary/EO_29763.jpg','./gallary/EO_24568.jpg','./gallary/EO_25085.jpg'],
-    "EBO": ['./gallary/ERB_168152.jpg'],
-    "IG": ["./gallary/PMY_901117.jpg"],
-    "LYT": ["./gallary/LY_742481.jpg"],
-    "MON": ["./gallary/MO_849518.jpg"],
-    "NGS": ["./gallary/SNE_746083.jpg"],
-    "PLA": ["./gallary/PLATELET_969782.jpg"]
+    "EBO": ['./gallary/ERB_168152.jpg','./gallary/ERB_170062.jpg','./gallary/ERB_174098.jpg'],
+    "IG": ["./gallary/PMY_901117.jpg",'./gallary/MMY_630078.jpg','./gallary/MY_318125.jpg'],
+    "LYT": ["./gallary/LY_742481.jpg",'./gallary/LY_731097.jpg','./gallary/LY_743393.jpg'],
+    "MON": ["./gallary/MO_849518.jpg",'./gallary/MO_888999.jpg','./gallary/MO_912563.jpg'],
+    "NGS": ["./gallary/SNE_746083.jpg",'./gallary/BNE_378921.jpg','./gallary/SNE_790562.jpg'],
+    "PLA": ["./gallary/PLATELET_969782.jpg",'./gallary/PLATELET_37710.jpg','./gallary/PLATELET_815342.jpg']
     }
 
-# Flatten labels and paths for display
+# --- First choose class ---
+class_choice = st.selectbox(
+    "Choose a class",
+    ["All"] + list(gallery.keys())
+)
+
+# --- Decide which images to show ---
 labels, paths = [], []
-for label, imgs in gallery.items():
-    for img_path in imgs:
-        labels.append(label)
+if class_choice == "All":
+    # flatten all classes
+    for label, imgs in gallery.items():
+        for img_path in imgs:
+            labels.append(label)
+            paths.append(img_path)
+else:
+    # only selected class
+    for img_path in gallery[class_choice]:
+        labels.append(class_choice)
         paths.append(img_path)
 
-# Default None
+# --- Show images in expander ---
 selected_gallery = None
-
-# Make gallery hidden until expanded
 with st.expander("Show Gallery", expanded=False):
     selected_gallery = image_select(
-        label="Choose from Gallery",
+        label=f"Choose from {class_choice} gallery",
         images=paths,
         captions=labels,
         use_container_width=False
     )
 
-# Store selection in session state
+# --- Store selection in session state ---
 if selected_gallery is not None:
     st.session_state["selected_gallery"] = selected_gallery
 
-# Retrieve selected gallery image
+# --- Retrieve selected image ---
 selected_gallery = st.session_state.get("selected_gallery", None)
-
 if selected_gallery:
     st.success(f"You selected: {selected_gallery}")
     image = Image.open(selected_gallery).convert("RGB").resize((299, 299))
-    #st.image(image, caption="Chosen Image", use_container_width=True)
 
 image = None
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB").resize((299,299))
+    #st.image(image, caption="Chosen Image", use_container_width=True)
 elif selected_gallery is not None:
     image = Image.open(selected_gallery).convert("RGB").resize((299,299))
-
+    
 if image:
     # Put button above the columns
     generate_cam = st.button("Generate Grad-CAM")
@@ -104,15 +113,17 @@ if image:
                 probs = F.softmax(output, dim=1)
                 pred_prob = probs[0, pred].item()
 
-        st.write(f"### Prediction: {class_names[pred]}")
-        st.write(f"### Probability: {pred_prob*100:.2f}%")
+        st.write(f"## Prediction: {class_names[pred]}")
+        st.write(f"## Probability: {pred_prob*100:.2f}%")
 
     with col2:
         if generate_cam:
             if 'InceptionV3' in selected_model_name:
-                heatmap = show_importance_inception(selected_model, img_tensor, target=pred, device='cpu')
+                heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
+                #heatmap = show_importance_inception(selected_model, img_tensor, target=pred, device='cpu')
             else:
-                heatmap = show_importance_resnet(selected_model, img_tensor, target=pred, device='cpu')
+                heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
+                #heatmap = show_importance_resnet(selected_model, img_tensor, target=pred, device='cpu')
 
             img_np = np.array(image)
 
@@ -127,5 +138,6 @@ if image:
             overlay = np.clip(overlay, 0, 1)
 
             st.image(overlay, caption="Grad-CAM Result")
+            #st.empty()
         else:
             st.empty()  # keep alignment if button not pressed
