@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 st.title("LeukoVision")
 class_names=['BAS','EOS','EBO','IG','LYT','MON','NGS','PLA']
 
-inception_model = torch.load('./inceptionv3.pth',weights_only=False,map_location=torch.device('cpu'))
+inception_model = torch.load('./Streamlit/inceptionv3.pth',weights_only=False,map_location=torch.device('cpu'))
 if isinstance(inception_model, torch.nn.DataParallel):
     inception_model = inception_model.module
 
