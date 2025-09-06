@@ -38,14 +38,14 @@ uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
 
 gallery = {
-    "BAS": ['./gallary/BA_580.jpg','./gallary/BA_19779.jpg','./gallary/BA_20201.jpg'],
-    "EOS": ['./gallary/EO_29763.jpg','./gallary/EO_24568.jpg','./gallary/EO_25085.jpg'],
-    "EBO": ['./gallary/ERB_168152.jpg','./gallary/ERB_170062.jpg','./gallary/ERB_174098.jpg'],
-    "IG": ["./gallary/PMY_901117.jpg",'./gallary/MMY_630078.jpg','./gallary/MY_318125.jpg'],
-    "LYT": ["./gallary/LY_742481.jpg",'./gallary/LY_731097.jpg','./gallary/LY_743393.jpg'],
-    "MON": ["./gallary/MO_849518.jpg",'./gallary/MO_888999.jpg','./gallary/MO_912563.jpg'],
-    "NGS": ["./gallary/SNE_746083.jpg",'./gallary/BNE_378921.jpg','./gallary/SNE_790562.jpg'],
-    "PLA": ["./gallary/PLATELET_969782.jpg",'./gallary/PLATELET_37710.jpg','./gallary/PLATELET_815342.jpg']
+    "BAS": ['./Streamlit/gallary/BA_580.jpg','./Streamlit/gallary/BA_19779.jpg','./Streamlit/gallary/BA_20201.jpg'],
+    "EOS": ['./Streamlit/gallary/EO_29763.jpg','./Streamlit/gallary/EO_24568.jpg','./Streamlit/gallary/EO_25085.jpg'],
+    "EBO": ['./Streamlit/gallary/ERB_168152.jpg','./Streamlit/gallary/ERB_170062.jpg','./Streamlit/gallary/ERB_174098.jpg'],
+    "IG": ["./Streamlit/gallary/PMY_901117.jpg",'./Streamlit/gallary/MMY_630078.jpg','./Streamlit/gallary/MY_318125.jpg'],
+    "LYT": ["./Streamlit/gallary/LY_742481.jpg",'./Streamlit/gallary/LY_731097.jpg','./Streamlit/gallary/LY_743393.jpg'],
+    "MON": ["./Streamlit/gallary/MO_849518.jpg",'./Streamlit/gallary/MO_888999.jpg','./Streamlit/gallary/MO_912563.jpg'],
+    "NGS": ["./Streamlit/gallary/SNE_746083.jpg",'./Streamlit/gallary/BNE_378921.jpg','./Streamlit/gallary/SNE_790562.jpg'],
+    "PLA": ["./Streamlit/gallary/PLATELET_969782.jpg",'./Streamlit/gallary/PLATELET_37710.jpg','./Streamlit/gallary/PLATELET_815342.jpg']
     }
 
 # --- First choose class ---
