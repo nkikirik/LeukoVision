@@ -19,7 +19,7 @@ inception_model = torch.load('./Streamlit/inceptionv3.pth',weights_only=False,ma
 if isinstance(inception_model, torch.nn.DataParallel):
     inception_model = inception_model.module
 
-resnet_model=torch.load('./resnet_model.pth',weights_only=False,map_location=torch.device('cpu'))
+resnet_model=torch.load('./Streamlit/resnet_model.pth',weights_only=False,map_location=torch.device('cpu'))
 if isinstance(resnet_model, torch.nn.DataParallel):
     resnet_model = resnet_model.module
 
