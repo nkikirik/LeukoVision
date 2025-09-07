@@ -150,13 +150,13 @@ if selected_model:
             if 'VGG16' in selected_model_name:
                 pred_class = np.argmax(predict_acc[0])
                 heatmap = make_gradcam_heatmap_keras(img_tensor, selected_model, 'block5_conv3', pred_class)
-                img_np = np.array(image)
-                heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
-                heatmap_uint8 = np.uint8(255 * heatmap_resized)
-                heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
-                # Overlay
-                superimposed = cv2.addWeighted(image, 0.6, heatmap_color, 0.4, 0)
-                st.image(superimposed, caption="Grad-CAM Result")
+                # img_np = np.array(image)
+                # heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
+                # heatmap_uint8 = np.uint8(255 * heatmap_resized)
+                # heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
+                # # Overlay
+                # superimposed = cv2.addWeighted(image, 0.6, heatmap_color, 0.4, 0)
+                # st.image(superimposed, caption="Grad-CAM Result")
             else:
                 img_tensor = preprocess(image).unsqueeze(0)
                 if 'InceptionV3' in selected_model_name:
@@ -164,19 +164,19 @@ if selected_model:
                 else:
                     heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
 
-                img_np = np.array(image)
+            img_np = np.array(image)
 
-                # Resize heatmap to match image
-                heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
-                heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
+            # Resize heatmap to match image
+            heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
+            heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
 
-                if img_np.max() > 1:
-                    img_np = img_np / 255.0
+            if img_np.max() > 1:
+                img_np = img_np / 255.0
 
-                overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
-                overlay = np.clip(overlay, 0, 1)
+            overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
+            overlay = np.clip(overlay, 0, 1)
 
-                st.image(overlay, caption="Grad-CAM Result")
+            st.image(overlay, caption="Grad-CAM Result")
             #st.empty()
         else:
             st.empty()  # keep alignment if button not pressed
