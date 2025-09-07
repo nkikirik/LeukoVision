@@ -54,6 +54,7 @@ def make_gradcam_heatmap_keras(img_array, model, last_conv_layer_name='block5_co
 
     with tf.GradientTape() as tape:
         conv_outputs, predictions = grad_model(img_array)
+        print (predictions.shape)
         if pred_index is None:
             pred_index = tf.argmax(predictions[0])
         class_channel = predictions[:, pred_index]
