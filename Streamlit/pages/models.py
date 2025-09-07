@@ -5,7 +5,7 @@ st.title('Modeling')
 section = option_menu(
     menu_title=None,
     options=["InceptionV3", "ResNet50", "VGG16"],  
-    icon=['🔬','🧬','🧪'],
+    icons=['🔬','🧬','🧪'],
     orientation="horizontal",
 )
 
