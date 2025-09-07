@@ -16,8 +16,8 @@ st.title("LeukoVision")
 class_names = ['BAS','EOS','EBO','IG','LYT','MON','NGS','PLA']
 
 # --- Load Models ---
-inception_model = torch.load('./Streamlit/inceptionv3.pth', map_location='cpu')
-resnet_model = torch.load('./Streamlit/resnet_model.pth', map_location='cpu')
+inception_model = torch.load('./Streamlit/inceptionv3.pth',weights_only=False, map_location=torch.device('cpu'))
+resnet_model = torch.load('./Streamlit/resnet_model.pth',weights_only=False, map_location=torch.device('cpu'))
 vgg16_model = load_model('./Streamlit/vgg16_model.h5')
 
 # Remove DataParallel wrapper if exists
