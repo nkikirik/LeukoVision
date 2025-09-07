@@ -149,9 +149,9 @@ if selected_model:
         if generate_cam:
             if 'VGG16' in selected_model_name:
                 pred_class = np.argmax(predict_acc[0])
-                print(pred_class)
                 heatmap = make_gradcam_heatmap_keras(img_tensor, selected_model, 'block5_conv3', pred_class)
-                heatmap_resized = cv2.resize(heatmap, (image.shape[1], image.shape[0]))
+                img_np = np.array(image)
+                heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
                 heatmap_uint8 = np.uint8(255 * heatmap_resized)
                 heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
                 # Overlay
