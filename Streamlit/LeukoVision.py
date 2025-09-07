@@ -6,10 +6,9 @@ pred = st.Page("./pages/Prediction.py", title="Predictions", icon="🧬")
 
 # Navigation container
 pg = st.navigation(
-    {
-        "Main": [home],
-        "Models": [pred],
-    },
+    [home,pred],
+    # {"Main": [home],
+    #     "Models": [pred]},
     position="top",  # 👈 horizontal navbar
 )
 
