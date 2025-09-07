@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import cv2
+import tensorflow as tf
 
 def make_gradcam_heatmap(img_tensor, model, target_layer_name, pred_index=None):   
     # Skip forward to get target layer predictions and activations
@@ -45,6 +46,31 @@ def make_gradcam_heatmap(img_tensor, model, target_layer_name, pred_index=None):
     heatmap /= np.max(heatmap) # Normalize the heatmap
 
     return heatmap, pred_index
+
+def make_gradcam_heatmap_keras(img_array, model, last_conv_layer_name='block5_conv3', pred_index=None):
+    # build a model that maps inputs -> (last_conv_output, model_output)
+    last_conv_layer = model.get_layer(last_conv_layer_name)
+    grad_model = tf.keras.models.Model(model.inputs, [last_conv_layer.output, model.output])
+
+    with tf.GradientTape() as tape:
+        conv_outputs, predictions = grad_model(img_array)
+        if pred_index is None:
+            pred_index = tf.argmax(predictions[0])
+        class_channel = predictions[:, pred_index]
+
+    # gradients of the target class w.r.t. conv feature maps
+    grads = tape.gradient(class_channel, conv_outputs)  # shape: (1, H, W, C)
+
+    # global average pooling on gradients -> importance for each feature map channel
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+
+    conv_outputs = conv_outputs[0]  # remove batch dim
+    heatmap = tf.reduce_sum(tf.multiply(pooled_grads, conv_outputs), axis=-1)
+    #heatmap = tf.reduce_sum(conv_outputs * pooled_grads[tf.newaxis, tf.newaxis, :], axis=-1)
+
+    # post-process
+    heatmap = tf.maximum(heatmap, 0) / (tf.math.reduce_max(heatmap) + 1e-8)
+    return heatmap.numpy()
 
 def get_canny_edge(img, threshold1=30, threshold2=80):
     """

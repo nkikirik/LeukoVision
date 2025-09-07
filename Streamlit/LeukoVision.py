@@ -137,7 +137,6 @@ if selected_model:
             if 'VGG16' in selected_model_name:
                 img_display = img_tensor[0]
                 img_display = img_display[..., ::-1]
-                #img_display += [103.939, 116.779, 123.68]  # add mean back
                 img_display = np.clip(img_display, 0, 255)  # ensure values are in [0,255]
                 img_display = img_display / 255.0
                 st.image(img_display, caption="Processed Image")
@@ -146,27 +145,36 @@ if selected_model:
                 img_np = img_tensor.permute(1, 2, 0).numpy()  
                 img_np = img_np.clip(0, 1)
                 st.image(img_np, caption="Processed Image")
-        # generate_cam = st.button("Generate Grad-CAM")
-        # if generate_cam:
-        #     img_tensor = preprocess(image).unsqueeze(0)
-        #     if 'InceptionV3' in selected_model_name:
-        #         heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
-        #     else:
-        #         heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
+        generate_cam = st.button("Generate Grad-CAM")
+        if generate_cam:
+            if 'VGG16' in selected_model_name:
+                heatmap = make_gradcam_heatmap(img_tensor, selected_model, 'block5_conv3', pred)
+                heatmap_resized = cv2.resize(heatmap, (image.shape[1], image.shape[0]))
+                heatmap_uint8 = np.uint8(255 * heatmap_resized)
+                heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
+                # Overlay
+                superimposed = cv2.addWeighted(image, 0.6, heatmap_color, 0.4, 0)
+                st.image(superimposed, caption="Grad-CAM Result")
+            else:
+                img_tensor = preprocess(image).unsqueeze(0)
+                if 'InceptionV3' in selected_model_name:
+                    heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
+                else:
+                    heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
 
-        #     img_np = np.array(image)
+                img_np = np.array(image)
 
-        #     # Resize heatmap to match image
-        #     heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
-        #     heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
+                # Resize heatmap to match image
+                heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
+                heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
 
-        #     if img_np.max() > 1:
-        #         img_np = img_np / 255.0
+                if img_np.max() > 1:
+                    img_np = img_np / 255.0
 
-        #     overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
-        #     overlay = np.clip(overlay, 0, 1)
+                overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
+                overlay = np.clip(overlay, 0, 1)
 
-        #     st.image(overlay, caption="Grad-CAM Result")
-        #     #st.empty()
-        # else:
-        #     st.empty()  # keep alignment if button not pressed
+                st.image(overlay, caption="Grad-CAM Result")
+            #st.empty()
+        else:
+            st.empty()  # keep alignment if button not pressed
