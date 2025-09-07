@@ -23,8 +23,8 @@ pg = st.navigation(
     [
         home,
         data,
-        pred,
-        models
+        models,
+        pred
     ],
     position="top",
 )
