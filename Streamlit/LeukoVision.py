@@ -109,7 +109,9 @@ if selected_model:
         with col1:
             st.image(image, caption="Input Image")
             if "VGG16" in selected_model_name:
-                img_tensor = preprocess_input(image)
+                img_array = np.array(image)  # convert PIL to NumPy
+                img_array = np.expand_dims(img_array, axis=0)  # batch dimension
+                img_tensor = preprocess_input(img_array)
             else:
                 if 'InceptionV3' in selected_model_name:
                     weights = Inception_V3_Weights.DEFAULT
