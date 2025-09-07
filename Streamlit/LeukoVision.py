@@ -130,6 +130,7 @@ if selected_model:
             st.image(img_np, caption="Processed Image")
         generate_cam = st.button("Generate Grad-CAM")
         if generate_cam:
+            img_tensor = preprocess(image).unsqueeze(0)
             if 'InceptionV3' in selected_model_name:
                 heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
             else:
