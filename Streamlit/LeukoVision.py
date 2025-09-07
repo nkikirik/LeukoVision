@@ -1,17 +1,17 @@
 import streamlit as st
 
-st.markdown(
-    """
-    <style>
-    /* Target the nav bar text */
-    .st-emotion-cache-1wbqy5l a p {
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            .st-emotion-cache-1wbqy5l a p {
         font-size:50px !important;   /* Increase/decrease font size */
         font-weight:600;             /* Make bold */
     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 home = st.Page("./pages/home.py", title="LeukoVision", icon="🏠")
 data = st.Page("./pages/data.py", title="Data", icon="📊")
