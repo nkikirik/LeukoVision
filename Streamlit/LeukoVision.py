@@ -1,6 +1,6 @@
 import streamlit as st
 
-home = st.Page("./Streamlit/pages/Page1.py", title="LeukoVision", icon="🏠")
+home = st.Page("./pages/Page1.py", title="LeukoVision", icon="🏠")
 pred = st.Page("./Streamlit/pages/Prediction.py", title="Predictions", icon="🧬")
 
 
