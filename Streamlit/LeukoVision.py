@@ -22,11 +22,13 @@ vgg16=st.Page("./pages/vgg16.py", title="VGG16")
 
 # Navigation container
 pg = st.navigation(
-    [home, data,
-     {'Models':  [inception, resnet, vgg16]},
-     pred
-     ],
-    position="top",  # 👈 horizontal navbar
+    [
+        home,
+        data,
+        pred,
+        {'Models': [inception, resnet, vgg16]},  # dropdown
+    ],
+    position="top",
 )
 
 # Run the active page
