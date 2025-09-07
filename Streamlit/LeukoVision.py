@@ -137,7 +137,7 @@ if selected_model:
             if 'VGG16' in selected_model_name:
                 img_display = img_tensor[0]
                 img_display = img_display[..., ::-1]
-                img_display += [103.939, 116.779, 123.68]  # add mean back
+                #img_display += [103.939, 116.779, 123.68]  # add mean back
                 img_display = np.clip(img_display, 0, 255)  # ensure values are in [0,255]
                 img_display = img_display / 255.0
                 st.image(img_display, caption="Processed Image")
