@@ -15,8 +15,11 @@ from utils import make_gradcam_heatmap, make_gradcam_heatmap_keras, get_canny_ed
 st.title("LeukoVision")
 class_names = ['BAS', 'EOS', 'EBO', 'IG', 'LYT', 'MON', 'NGS', 'PLA']
 
+@st.cache_resource
 # --- Load Models ---
-inception_model = torch.load('./Streamlit/inceptionv3.pth', weights_only=False,map_location=torch.device('cpu'))
+def load_inception():
+    return torch.load('./Streamlit/inceptionv3.pth', weights_only=False,map_location=torch.device('cpu'))
+inception_model = load_inception()
 resnet_model = torch.load('./Streamlit/resnet_model.pth', weights_only=False,map_location=torch.device('cpu'))
 vgg16_model = load_model('./Streamlit/vgg16_model.h5')
 
