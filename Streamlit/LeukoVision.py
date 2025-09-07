@@ -113,7 +113,7 @@ if selected_model:
             elif 'ResNet50' in selected_model_name:
                 weights = ResNet50_Weights.DEFAULT
             preprocess = weights.transforms()
-            img_tensor = preprocess(image).unsqueeze(0)
+            img_tensor = preprocess(image)#.unsqueeze(0)
             with torch.no_grad():
                 output = selected_model(img_tensor)
                 pred = output.argmax(dim=1).item()
