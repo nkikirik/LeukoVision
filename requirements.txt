@@ -7,3 +7,4 @@ streamlit_image_select==0.6.0
 torch==2.7.1
 torchvision==0.22.1
 tensorflow==2.6.0
+keras==2.6.0
