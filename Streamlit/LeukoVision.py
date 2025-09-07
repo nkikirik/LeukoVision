@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_image_select import image_select
 from PIL import Image
 import torch
-from utils import make_gradcam_heatmap,get_canny_edge
+from utils import make_gradcam_heatmap,make_gradcam_heatmap_keras,get_canny_edge
 import torchvision.models as models
 from torchvision.models import Inception_V3_Weights,ResNet50_Weights
 import torch.nn.functional as F
@@ -148,7 +148,7 @@ if selected_model:
         generate_cam = st.button("Generate Grad-CAM")
         if generate_cam:
             if 'VGG16' in selected_model_name:
-                heatmap = make_gradcam_heatmap(img_tensor, selected_model, 'block5_conv3', pred)
+                heatmap = make_gradcam_heatmap_keras(img_tensor, selected_model, 'block5_conv3', pred)
                 heatmap_resized = cv2.resize(heatmap, (image.shape[1], image.shape[0]))
                 heatmap_uint8 = np.uint8(255 * heatmap_resized)
                 heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
