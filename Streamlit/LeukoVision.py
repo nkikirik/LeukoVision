@@ -113,7 +113,7 @@ if selected_model:
             elif 'ResNet50' in selected_model_name:
                 weights = ResNet50_Weights.DEFAULT
             preprocess = weights.transforms()
-            img_tensor = preprocess(image)#.unsqueeze(0)
+            img_tensor = preprocess(image).unsqueeze(0)
             with torch.no_grad():
                 output = selected_model(img_tensor)
                 pred = output.argmax(dim=1).item()
@@ -124,6 +124,7 @@ if selected_model:
             st.write(f"## Probability: {pred_prob*100:.2f}%")
 
         with col2:
+            img_tensor = preprocess(image)
             img_np = img_tensor.permute(1, 2, 0).numpy()  # (C,H,W) -> (H,W,C)
             img_np = img_np.clip(0, 1)
             st.image(img_np, caption="Processed Image")
