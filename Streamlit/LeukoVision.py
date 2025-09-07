@@ -7,6 +7,8 @@ import torchvision.models as models
 from torchvision.models import Inception_V3_Weights,ResNet50_Weights
 import torch.nn.functional as F
 import torch.nn as nn
+from tensorflow.keras.models import load_model
+from tensorflow.keras.applications.vgg16 import preprocess_input
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -23,10 +25,12 @@ resnet_model=torch.load('./Streamlit/resnet_model.pth',weights_only=False,map_lo
 if isinstance(resnet_model, torch.nn.DataParallel):
     resnet_model = resnet_model.module
 
+vgg16_model=load_model('vgg16_model.h5')
+
 models = {
     "InceptionV3": inception_model,
     "ResNet50": resnet_model,
-    # "Keras Model": keras_model,
+    "VGG16": vgg16_model,
 }
 
 selected_model_name = st.selectbox("Choose a model", ["None"] + list(models.keys()))
@@ -101,11 +105,7 @@ if selected_model:
         image = Image.open(selected_gallery).convert("RGB").resize((299,299))
         
     if image:
-        # Put button above the columns
-        
-
         col1, col2 = st.columns(2)
-
         with col1:
             st.image(image, caption="Input Image")
             if 'InceptionV3' in selected_model_name:
@@ -119,6 +119,8 @@ if selected_model:
                 pred = output.argmax(dim=1).item()
                 probs = F.softmax(output, dim=1)
                 pred_prob = probs[0, pred].item()
+            if "VGG16" in selected_model_name:
+                img_tensor = preprocess_input(image)
 
             st.write(f"## Prediction: {class_names[pred]}")
             st.write(f"## Probability: {pred_prob*100:.2f}%")
@@ -128,27 +130,27 @@ if selected_model:
             img_np = img_tensor.permute(1, 2, 0).numpy()  
             img_np = img_np.clip(0, 1)
             st.image(img_np, caption="Processed Image")
-        generate_cam = st.button("Generate Grad-CAM")
-        if generate_cam:
-            img_tensor = preprocess(image).unsqueeze(0)
-            if 'InceptionV3' in selected_model_name:
-                heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
-            else:
-                heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
+        # generate_cam = st.button("Generate Grad-CAM")
+        # if generate_cam:
+        #     img_tensor = preprocess(image).unsqueeze(0)
+        #     if 'InceptionV3' in selected_model_name:
+        #         heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
+        #     else:
+        #         heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
 
-            img_np = np.array(image)
+        #     img_np = np.array(image)
 
-            # Resize heatmap to match image
-            heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
-            heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
+        #     # Resize heatmap to match image
+        #     heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
+        #     heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
 
-            if img_np.max() > 1:
-                img_np = img_np / 255.0
+        #     if img_np.max() > 1:
+        #         img_np = img_np / 255.0
 
-            overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
-            overlay = np.clip(overlay, 0, 1)
+        #     overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
+        #     overlay = np.clip(overlay, 0, 1)
 
-            st.image(overlay, caption="Grad-CAM Result")
-            #st.empty()
-        else:
-            st.empty()  # keep alignment if button not pressed
+        #     st.image(overlay, caption="Grad-CAM Result")
+        #     #st.empty()
+        # else:
+        #     st.empty()  # keep alignment if button not pressed
