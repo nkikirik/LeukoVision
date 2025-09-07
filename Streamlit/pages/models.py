@@ -1,11 +1,17 @@
 import streamlit as st
-
+from streamlit_option_menu import option_menu
 st.title('Modeling')
 
-section = st.sidebar.radio(
-    "Choose Section",
-    ["InceptionV3", "ResNet50", "VGG16"]
+section = option_menu(
+    menu_title=None,
+    options=["InceptionV3", "ResNet50", "VGG16"],  
+    orientation="horizontal",
 )
+
+# section = st.sidebar.radio(
+#     "Choose Section",
+#     ["InceptionV3", "ResNet50", "VGG16"]
+# )
 
 if section == "InceptionV3":
     st.header("InceptionV3")
