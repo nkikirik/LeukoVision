@@ -4,7 +4,7 @@ from PIL import Image
 import torch
 from utils import make_gradcam_heatmap,get_canny_edge
 import torchvision.models as models
-from torchvision.models import Inception_V3_Weights
+from torchvision.models import Inception_V3_Weights,ResNet50_Weights
 import torch.nn.functional as F
 import torch.nn as nn
 import cv2
@@ -102,47 +102,51 @@ if selected_model:
         
     if image:
         # Put button above the columns
-        generate_cam = st.button("Generate Grad-CAM")
+        
 
         col1, col2 = st.columns(2)
 
         with col1:
             st.image(image, caption="Input Image")
-            if 'InceptionV3' in selected_model_name or 'ResNet50' in selected_model_name:
+            if 'InceptionV3' in selected_model_name:
                 weights = Inception_V3_Weights.DEFAULT
-                preprocess = weights.transforms()
-                img_tensor = preprocess(image).unsqueeze(0)
-                with torch.no_grad():
-                    output = selected_model(img_tensor)
-                    pred = output.argmax(dim=1).item()
-                    probs = F.softmax(output, dim=1)
-                    pred_prob = probs[0, pred].item()
+            elif 'ResNet50' in selected_model_name:
+                weights = ResNet50_Weights.DEFAULT
+            preprocess = weights.transforms()
+            img_tensor = preprocess(image).unsqueeze(0)
+            with torch.no_grad():
+                output = selected_model(img_tensor)
+                pred = output.argmax(dim=1).item()
+                probs = F.softmax(output, dim=1)
+                pred_prob = probs[0, pred].item()
 
             st.write(f"## Prediction: {class_names[pred]}")
             st.write(f"## Probability: {pred_prob*100:.2f}%")
 
         with col2:
-            if generate_cam:
-                if 'InceptionV3' in selected_model_name:
-                    heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
-                    #heatmap = show_importance_inception(selected_model, img_tensor, target=pred, device='cpu')
-                else:
-                    heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
-                    #heatmap = show_importance_resnet(selected_model, img_tensor, target=pred, device='cpu')
-
-                img_np = np.array(image)
-
-                # Resize heatmap to match image
-                heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
-                heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
-
-                if img_np.max() > 1:
-                    img_np = img_np / 255.0
-
-                overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
-                overlay = np.clip(overlay, 0, 1)
-
-                st.image(overlay, caption="Grad-CAM Result")
-                #st.empty()
+            img_np = img_tensor.permute(1, 2, 0).numpy()  # (C,H,W) -> (H,W,C)
+            img_np = img_np.clip(0, 1)
+            st.image(img_np, caption="Processed Image")
+        generate_cam = st.button("Generate Grad-CAM")
+        if generate_cam:
+            if 'InceptionV3' in selected_model_name:
+                heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="Mixed_7c")
             else:
-                st.empty()  # keep alignment if button not pressed
+                heatmap,pred_label=make_gradcam_heatmap(img_tensor, selected_model, target_layer_name="layer4")
+
+            img_np = np.array(image)
+
+            # Resize heatmap to match image
+            heatmap_resized = cv2.resize(heatmap, (img_np.shape[1], img_np.shape[0]))
+            heatmap_color = plt.cm.jet(heatmap_resized)[:, :, :3]
+
+            if img_np.max() > 1:
+                img_np = img_np / 255.0
+
+            overlay = 0.4 * heatmap_color + 0.6 * get_canny_edge(img_np)
+            overlay = np.clip(overlay, 0, 1)
+
+            st.image(overlay, caption="Grad-CAM Result")
+            #st.empty()
+        else:
+            st.empty()  # keep alignment if button not pressed
