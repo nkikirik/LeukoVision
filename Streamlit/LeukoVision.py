@@ -5,7 +5,7 @@ st.markdown(
     <style>
     /* Target the nav bar text */
     .st-emotion-cache-1wbqy5l a p {
-        font-size:24px !important;   /* Increase/decrease font size */
+        font-size:50px !important;   /* Increase/decrease font size */
         font-weight:600;             /* Make bold */
     }
     </style>
