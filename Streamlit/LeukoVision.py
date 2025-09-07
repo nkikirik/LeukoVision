@@ -25,7 +25,7 @@ resnet_model=torch.load('./Streamlit/resnet_model.pth',weights_only=False,map_lo
 if isinstance(resnet_model, torch.nn.DataParallel):
     resnet_model = resnet_model.module
 
-vgg16_model=load_model('vgg16_model.h5')
+vgg16_model=load_model('./Streamlit/vgg16_model.h5')
 
 models = {
     "InceptionV3": inception_model,
