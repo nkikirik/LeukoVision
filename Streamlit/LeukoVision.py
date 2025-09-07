@@ -125,7 +125,7 @@ if selected_model:
 
         with col2:
             img_tensor = preprocess(image)
-            img_np = img_tensor.permute(1, 2, 0).numpy()  # (C,H,W) -> (H,W,C)
+            img_np = img_tensor.permute(1, 2, 0).numpy()  
             img_np = img_np.clip(0, 1)
             st.image(img_np, caption="Processed Image")
         generate_cam = st.button("Generate Grad-CAM")
