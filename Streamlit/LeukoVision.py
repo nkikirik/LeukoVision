@@ -35,7 +35,7 @@ if selected_model_name != "None":
     selected_model = models[selected_model_name]
     st.write(f"### You selected: {selected_model_name}")
 
-st.write(f"### You selected: {selected_model_name}")
+#st.write(f"### You selected: {selected_model_name}")
 
 if selected_model:
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
