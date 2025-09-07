@@ -1,7 +1,7 @@
 import streamlit as st
 
 home = st.Page("./pages/Page1.py", title="LeukoVision", icon="🏠")
-pred = st.Page("./Streamlit/pages/Prediction.py", title="Predictions", icon="🧬")
+pred = st.Page("./pages/Prediction.py", title="Predictions", icon="🧬")
 
 
 # Navigation container
