@@ -109,8 +109,8 @@ if selected_model:
         with col1:
             st.image(image, caption="Input Image")
             if "VGG16" in selected_model_name:
-                img_array = np.array(image)  # convert PIL to NumPy
-                img_array = np.expand_dims(img_array, axis=0)  # batch dimension
+                img_array = np.array(image)  
+                img_array = np.expand_dims(img_array, axis=0)  
                 img_tensor = preprocess_input(img_array)
                 predict_acc=selected_model.predict(img_tensor,verbose=0)
                 predict=np.argmax(predict_acc, axis=-1)
@@ -134,10 +134,15 @@ if selected_model:
             st.write(f"## Probability: {pred_prob*100:.2f}%")
 
         with col2:
-            img_tensor = preprocess(image)
-            img_np = img_tensor.permute(1, 2, 0).numpy()  
-            img_np = img_np.clip(0, 1)
-            st.image(img_np, caption="Processed Image")
+            if 'VGG16' in selected_model_name:
+                img_display = img_tensor[0]
+                img_display = img_display[..., ::-1]
+                st.image(img_display, caption="Processed Image")
+            else:
+                img_tensor = preprocess(image)
+                img_np = img_tensor.permute(1, 2, 0).numpy()  
+                img_np = img_np.clip(0, 1)
+                st.image(img_np, caption="Processed Image")
         # generate_cam = st.button("Generate Grad-CAM")
         # if generate_cam:
         #     img_tensor = preprocess(image).unsqueeze(0)
