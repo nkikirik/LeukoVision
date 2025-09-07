@@ -112,6 +112,10 @@ if selected_model:
                 img_array = np.array(image)  # convert PIL to NumPy
                 img_array = np.expand_dims(img_array, axis=0)  # batch dimension
                 img_tensor = preprocess_input(img_array)
+                predict_acc=selected_model.predict(img_tensor,verbose=0)
+                predict=np.argmax(predict_acc, axis=-1)
+                pred = predict[0]
+                pred_prob = predict_acc[0, pred]
             else:
                 if 'InceptionV3' in selected_model_name:
                     weights = Inception_V3_Weights.DEFAULT
