@@ -19,9 +19,13 @@ class_names = ['BAS', 'EOS', 'EBO', 'IG', 'LYT', 'MON', 'NGS', 'PLA']
 # --- Load Models ---
 def load_inception():
     return torch.load('./Streamlit/inceptionv3.pth', weights_only=False,map_location=torch.device('cpu'))
+def load_resnet():
+    return torch.load('./Streamlit/resnet_model.pth', weights_only=False,map_location=torch.device('cpu'))
+def load_vgg16():
+    return load_model('./Streamlit/vgg16_model.h5')
 inception_model = load_inception()
-resnet_model = torch.load('./Streamlit/resnet_model.pth', weights_only=False,map_location=torch.device('cpu'))
-vgg16_model = load_model('./Streamlit/vgg16_model.h5')
+resnet_model = load_resnet()
+vgg16_model = load_vgg16()
 
 # Remove DataParallel wrapper if exists
 for m in [inception_model, resnet_model]:
