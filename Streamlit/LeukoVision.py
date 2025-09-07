@@ -108,19 +108,21 @@ if selected_model:
         col1, col2 = st.columns(2)
         with col1:
             st.image(image, caption="Input Image")
-            if 'InceptionV3' in selected_model_name:
-                weights = Inception_V3_Weights.DEFAULT
-            elif 'ResNet50' in selected_model_name:
-                weights = ResNet50_Weights.DEFAULT
-            preprocess = weights.transforms()
-            img_tensor = preprocess(image).unsqueeze(0)
-            with torch.no_grad():
-                output = selected_model(img_tensor)
-                pred = output.argmax(dim=1).item()
-                probs = F.softmax(output, dim=1)
-                pred_prob = probs[0, pred].item()
             if "VGG16" in selected_model_name:
                 img_tensor = preprocess_input(image)
+            else:
+                if 'InceptionV3' in selected_model_name:
+                    weights = Inception_V3_Weights.DEFAULT
+                elif 'ResNet50' in selected_model_name:
+                    weights = ResNet50_Weights.DEFAULT
+                preprocess = weights.transforms()
+                img_tensor = preprocess(image).unsqueeze(0)
+                with torch.no_grad():
+                    output = selected_model(img_tensor)
+                    pred = output.argmax(dim=1).item()
+                    probs = F.softmax(output, dim=1)
+                    pred_prob = probs[0, pred].item()
+            
 
             st.write(f"## Prediction: {class_names[pred]}")
             st.write(f"## Probability: {pred_prob*100:.2f}%")
