@@ -15,7 +15,7 @@ st.markdown(
 
 home = st.Page("./pages/home.py", title="LeukoVision", icon="🏠")
 data = st.Page("./pages/data.py", title="Data", icon="📊")
-pred = st.Page("./pages/prediction.py", title="Vision Lab", icon="🧪")
+pred = st.Page("./pages/visionlab.py", title="Vision Lab", icon="🧪")
 inception=st.Page("./pages/inception.py", title="InceptionV3")
 resnet=st.Page("./pages/resnet.py", title="ResNet50")
 vgg16=st.Page("./pages/vgg16.py", title="VGG16")
