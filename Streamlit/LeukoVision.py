@@ -36,6 +36,7 @@ st.write(f"### You selected: {selected_model_name}")
 
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
+st.write(f"### OR:")
 
 gallery = {
     "BAS": ['./Streamlit/gallary/BA_580.jpg','./Streamlit/gallary/BA_19779.jpg','./Streamlit/gallary/BA_20201.jpg'],
