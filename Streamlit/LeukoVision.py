@@ -148,7 +148,8 @@ if selected_model:
         generate_cam = st.button("Generate Grad-CAM")
         if generate_cam:
             if 'VGG16' in selected_model_name:
-                heatmap = make_gradcam_heatmap_keras(img_tensor, selected_model, 'block5_conv3', pred)
+                pred_class = np.argmax(predict_acc[0])
+                heatmap = make_gradcam_heatmap_keras(img_tensor, selected_model, 'block5_conv3', pred_class)
                 heatmap_resized = cv2.resize(heatmap, (image.shape[1], image.shape[0]))
                 heatmap_uint8 = np.uint8(255 * heatmap_resized)
                 heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
