@@ -50,4 +50,4 @@ df = pd.read_csv(file_path,
 
 # Display in Streamlit
 st.write("### Blood Cell Counts Across Datasets")
-st.dataframe(df)
+st.dataframe(df.drop('Chinese',axis=1))
