@@ -24,7 +24,8 @@ fig.add_trace(go.Bar(
 fig.add_trace(go.Bar(
     x=cell,
     y=count[:,1],
-    name='German DS'
+    name='German DS',
+    marker_color='#cc3164'
 ))
 
 # Update layout for stacked bars
