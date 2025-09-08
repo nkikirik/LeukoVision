@@ -46,8 +46,12 @@ file_path = './Streamlit/pages/count_spanish_german_chinese.txt'
 df = pd.read_csv(file_path, 
                  sep='\s+',          # whitespace separator
                  header=None,        # no header in file
-                 names=['Cell', 'Spanish', 'German', 'Chinese'])
+                 names=['Abbreviation ', 'Spanish', 'German', 'Chinese'])
+cell_name=['Basophil','Erythroblast','Eosinophil','Smudge cell','Lymphocyte (atypical)','Lymphocyte (typical)',
+ 'Metamyelocyte', 'Monoblast','Monocyte','Myelocyte','Myeloblast','Neutrophil (band)','Neutrophil (segmented)',
+'Platelet','Promyelocyte (bilobled)','Promyelocyte', 'Not Assigned']
 df.index = df.index + 1
+df.insert(0, "Cell type", cell_name)
 df=df.drop('Chinese',axis=1)
 styled_df = df.style.set_properties(**{'text-align': 'center'}) \
                     .set_table_styles([dict(selector='th', props=[('text-align', 'center')])])
