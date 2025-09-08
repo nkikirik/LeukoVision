@@ -16,7 +16,8 @@ fig = go.Figure()
 fig.add_trace(go.Bar(
     x=cell,
     y=count[:,0],
-    name='Spanish DS'
+    name='Spanish DS',
+    marker_color='#3362b0'
 ))
 
 
