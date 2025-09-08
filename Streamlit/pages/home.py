@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("🏠 Welcome to LeukoVision")
+st.title("🏠 Welcome to LeukoVision 🩸")
 
 
 st.markdown("""
