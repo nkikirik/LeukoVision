@@ -42,7 +42,7 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 
-file_path = 'count_spanish_german_chinese.txt'
+file_path = './Streamlit/pages/count_spanish_german_chinese.txt'
 df = pd.read_csv(file_path, 
                  sep='\s+',          # whitespace separator
                  header=None,        # no header in file
