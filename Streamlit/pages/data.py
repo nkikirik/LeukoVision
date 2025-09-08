@@ -48,8 +48,9 @@ df = pd.read_csv(file_path,
                  header=None,        # no header in file
                  names=['Cell', 'Spanish', 'German', 'Chinese'])
 df.index = df.index + 1
+df.drop('Chinese',axis=1)
 styled_df = df.style.set_properties(**{'text-align': 'center'}) \
                     .set_table_styles([dict(selector='th', props=[('text-align', 'center')])])
 # Display in Streamlit
 st.write("### Blood Cell Counts Across Datasets")
-st.dataframe(styled_df.drop('Chinese',axis=1))
+st.dataframe(styled_df)
