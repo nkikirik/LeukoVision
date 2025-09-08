@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from utils import make_gradcam_heatmap, make_gradcam_heatmap_keras, get_canny_edge
 
 # --- App Title ---
-st.title("LeukoVision")
+st.title("Vision Lab")
 class_names = ['BAS', 'EOS', 'EBO', 'IG', 'LYT', 'MON', 'NGS', 'PLA']
 
 @st.cache_resource
