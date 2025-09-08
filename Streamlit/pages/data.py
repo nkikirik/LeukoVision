@@ -7,8 +7,8 @@ st.title('Data')
 
 
 # Load data
-cell = np.loadtxt('count_spanish_german_chinese.txt', usecols=0, dtype=str)
-count = np.loadtxt('count_spanish_german_chinese.txt', usecols=[1,2,3], dtype=int)
+cell = np.loadtxt('./Streamlit/pages/count_spanish_german_chinese.txt', usecols=0, dtype=str)
+count = np.loadtxt('./Streamlit/pages/count_spanish_german_chinese.txt', usecols=[1,2,3], dtype=int)
 
 # Create a stacked bar chart
 fig = go.Figure()
