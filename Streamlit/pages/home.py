@@ -13,4 +13,4 @@ With **LeukoVision**, you can:
 - Compare the performance of different models for research and educational purposes.
 
 This interactive tool is perfect for **researchers, educators, and medical professionals** looking to combine computational pathology with intuitive visualization.
-""")
+</div>""")
