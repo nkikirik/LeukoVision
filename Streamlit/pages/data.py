@@ -1,6 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 import numpy as np
+import pandas as pd
 
 
 st.title('Data')
@@ -39,3 +40,14 @@ fig.update_layout(
 
 # Display in Streamlit
 st.plotly_chart(fig, use_container_width=True)
+
+
+file_path = 'count_spanish_german_chinese.txt'
+df = pd.read_csv(file_path, 
+                 sep='\s+',          # whitespace separator
+                 header=None,        # no header in file
+                 names=['Cell', 'Spanish', 'German', 'Chinese'])
+
+# Display in Streamlit
+st.write("### Blood Cell Counts Across Datasets")
+st.dataframe(df)
