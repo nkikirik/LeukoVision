@@ -98,7 +98,7 @@ if selected_model:
         image = Image.open(uploaded_file).convert("RGB").resize((299, 299))
     elif selected_gallery is not None:
         image = Image.open(selected_gallery).convert("RGB").resize((299, 299))
-        st.success(f"You selected: {selected_gallery}")
+        #st.success(f"You selected: {selected_gallery}")
 
     # --- Image Prediction and Display ---
     if image:
