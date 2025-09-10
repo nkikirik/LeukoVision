@@ -102,4 +102,4 @@ def white_bg(image):
     # Create white background
     white_bg = Image.new("RGBA", img.size, "WHITE")
     white_bg.paste(img, (0, 0), img)
-    return img
+    return white_bg
