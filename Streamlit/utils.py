@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import cv2
 import tensorflow as tf
+from PIL import Image
 
 def make_gradcam_heatmap(img_tensor, model, target_layer_name, pred_index=None):   
     # Skip forward to get target layer predictions and activations
@@ -94,3 +95,11 @@ def get_canny_edge(img, threshold1=30, threshold2=80):
     # Convert to 3-channel float [0,1]
     edge = np.stack([edge]*3, axis=-1) / 255.0
     return edge
+
+def white_bg(image):
+    img = Image.open(image).convert("RGBA")
+
+    # Create white background
+    white_bg = Image.new("RGBA", img.size, "WHITE")
+    white_bg.paste(img, (0, 0), img)
+    return img

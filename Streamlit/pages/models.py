@@ -1,5 +1,8 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
+import sys
+sys.path.append("../")
+from utils import white_bg
 st.title('Modeling')
 
 st.markdown('LeukoVision leverages state-of-the-art convolutional neural networks (CNNs) ' \
@@ -21,7 +24,7 @@ section = option_menu(
 
 if section == "InceptionV3":
     st.header("InceptionV3 🔬")
-    st.image('./Streamlit/pages/images/inceptionv3.png', caption='Architecture diagram of InceptionV3',use_container_width=True)
+    st.image(white_bg('./Streamlit/pages/images/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
 
 elif section == "ResNet50":
     st.header("ResNet50 🧬")
