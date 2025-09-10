@@ -31,8 +31,7 @@ if section == "InceptionV3":
     with st.expander("See Full Model Summary"):
         stream = io.StringIO()
         model.summary(print_fn=lambda x: stream.write(x + "\n"))
-        summary_string = stream.getvalue()
-        st.text(summary_string)
+        st.code(stream.getvalue())
 
 elif section == "ResNet50":
     st.header("ResNet50 🧬")
