@@ -43,7 +43,7 @@ if section == "InceptionV3":
     Thanks to these innovations, InceptionV3 achieves high accuracy on benchmark datasets such as ImageNet, while keeping computational resources manageable. This makes it a popular choice for real-world applications, including medical imaging, object detection, and visual recognition tasks.
                 
     </div>
-                """)
+    """,unsafe_allow_html=True)
 
     st.image(white_bg('./Streamlit/pages/images/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
     model = InceptionV3(weights='imagenet')
