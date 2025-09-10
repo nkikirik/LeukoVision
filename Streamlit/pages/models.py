@@ -25,7 +25,7 @@ section = option_menu(
 # )
 
 if section == "InceptionV3":
-    st.header("InceptionV3 🔬")
+    st.subheader("InceptionV3 🔬")
     st.image(white_bg('./Streamlit/pages/images/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
     model = InceptionV3(weights='imagenet')
     with st.expander("See Full Model Summary"):
