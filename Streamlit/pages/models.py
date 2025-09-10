@@ -21,7 +21,7 @@ section = option_menu(
 
 if section == "InceptionV3":
     st.header("InceptionV3 🔬")
-    st.image('./Streamlit/pages/images/inceptionv3.png', caption='Architecture diagram of InceptionV3')
+    st.image('./Streamlit/pages/images/inceptionv3.png', caption='Architecture diagram of InceptionV3',use_container_width=True)
 
 elif section == "ResNet50":
     st.header("ResNet50 🧬")
