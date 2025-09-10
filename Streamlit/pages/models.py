@@ -1,7 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import sys
-sys.path.append("../")
 from utils import white_bg
 st.title('Modeling')
 
