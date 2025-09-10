@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import sys
 from utils import white_bg
+import io
 from tensorflow.keras.applications import InceptionV3
 
 st.title('Modeling')
@@ -28,7 +29,10 @@ if section == "InceptionV3":
     st.image(white_bg('./Streamlit/pages/images/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
     model = InceptionV3(weights='imagenet')
     with st.expander("See Full Model Summary"):
-        st.text(model.summary())
+        stream = io.StringIO()
+        model.summary(print_fn=lambda x: stream.write(x + "\n"))
+        summary_string = stream.getvalue()
+        st.text(summary_string)
 
 elif section == "ResNet50":
     st.header("ResNet50 🧬")
