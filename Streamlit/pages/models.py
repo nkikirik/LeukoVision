@@ -27,8 +27,8 @@ if section == "InceptionV3":
     st.header("InceptionV3 🔬")
     st.image(white_bg('./Streamlit/pages/images/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
     model = InceptionV3(weights='imagenet')
-    text=model.summary()
-    st.text(text)
+    with st.expander("See Full Model Summary"):
+        st.text(model.summary())
 
 elif section == "ResNet50":
     st.header("ResNet50 🧬")
