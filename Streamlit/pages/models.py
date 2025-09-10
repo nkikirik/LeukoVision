@@ -26,7 +26,7 @@ section = option_menu(
 
 if section == "InceptionV3":
     st.subheader("InceptionV3 🔬")
-    st.markdown("""
+    st.markdown(""" ### Overview
     <div style="text-align: justify;">
                 
     InceptionV3 is a deep convolutional neural network architecture designed for efficient and accurate image recognition. It is an evolution of the original GoogLeNet (Inception) model, optimized for both computational efficiency and high performance on large-scale image classification tasks.  
@@ -51,6 +51,7 @@ if section == "InceptionV3":
         stream = io.StringIO()
         model.summary(print_fn=lambda x: stream.write(x + "\n"))
         st.code(stream.getvalue())
+    st.markdown('### Performace')
 
 elif section == "ResNet50":
     st.subheader("ResNet50 🧬")
