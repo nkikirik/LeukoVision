@@ -27,8 +27,6 @@ section = option_menu(
 if section == "InceptionV3":
     st.subheader("InceptionV3 🔬")
     st.markdown("""
-    # InceptionV3 Overview
-
     InceptionV3 is a deep convolutional neural network architecture designed for efficient and accurate image recognition. It is an evolution of the original GoogLeNet (Inception) model, optimized for both computational efficiency and high performance on large-scale image classification tasks.  
 
     The key idea behind InceptionV3 is the use of **Inception modules**, which allow the network to capture features at multiple scales simultaneously. Each module applies several convolutions of different sizes in parallel and concatenates the results, enabling the model to learn both fine and coarse features from an image.  
