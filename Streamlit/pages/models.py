@@ -20,12 +20,12 @@ section = option_menu(
 # )
 
 if section == "InceptionV3":
-    st.header("InceptionV3")
-    
+    st.header("InceptionV3 🔬")
+    st.image('./images/inceptionv3.png', caption='Architecture diagram of InceptionV3')
 
 elif section == "ResNet50":
-    st.header("ResNet50")
+    st.header("ResNet50 🧬")
     
 
 elif section == "VGG16":
-    st.header("VGG16")
+    st.header("VGG16 🧪")
