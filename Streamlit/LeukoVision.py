@@ -18,6 +18,7 @@ home = st.Page("./pages/home.py", title="LeukoVision", icon="🏠")
 data = st.Page("./pages/data.py", title="Data", icon="📊")
 pred = st.Page("./pages/visionlab.py", title="Vision Lab", icon="🧪")
 models=st.Page("./pages/models.py", title="Modeling", icon='🤖')
+pers=st.page("./pages/perspectives.py", title='Perspectives', icon='🔭')
 
 # Navigation container
 pg = st.navigation(
@@ -25,7 +26,8 @@ pg = st.navigation(
         home,
         data,
         models,
-        pred
+        pred,
+        pers
     ],
     position="top",
 )
