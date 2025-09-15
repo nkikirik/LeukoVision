@@ -4,6 +4,7 @@ import sys
 from utils import white_bg
 import io
 from tensorflow.keras.applications import InceptionV3
+from tensorflow.keras.applications import VGG16
 
 st.title('Modeling')
 
@@ -59,3 +60,7 @@ elif section == "ResNet50":
 
 elif section == "VGG16":
     st.subheader("VGG16 🧪")
+
+
+
+
