@@ -3,8 +3,9 @@ from streamlit_option_menu import option_menu
 import sys
 from utils import white_bg
 import io
+import tensorflow
 from tensorflow.keras.applications import InceptionV3
-from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications import vgg16
 
 st.title('Modeling')
 
