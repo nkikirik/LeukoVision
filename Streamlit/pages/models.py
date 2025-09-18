@@ -4,8 +4,8 @@ import sys
 from utils import white_bg
 import io
 import tensorflow as tf
-from tf.keras.applications import InceptionV3
-from tf.keras.applications import vgg16
+from tensorflow.keras.applications import InceptionV3
+from tensorflow.keras.applications import VGG16
 
 st.title('Modeling')
 
