@@ -4,8 +4,8 @@ import sys
 from utils import white_bg
 import io
 import tensorflow as tf
-from tensorflow.keras.applications import InceptionV3
-from tensorflow.keras.applications import VGG16
+from keras.applications import InceptionV3 # type: ignore
+from keras.applications import VGG16 # type: ignore
 
 st.title('Modeling')
 
@@ -61,6 +61,33 @@ elif section == "ResNet50":
 
 elif section == "VGG16":
     st.subheader("VGG16 🧪")
+    vgg16_model = VGG16(weights='imagenet')
+
+    st.markdown(""" ### Overview
+    <div style="text-align: justify;">
+                
+    InceptionV3 is a deep convolutional neural network architecture designed for efficient and accurate image recognition. It is an evolution of the original GoogLeNet (Inception) model, optimized for both computational efficiency and high performance on large-scale image classification tasks.  
+
+    The key idea behind InceptionV3 is the use of **Inception modules**, which allow the network to capture features at multiple scales simultaneously. Each module applies several convolutions of different sizes in parallel and concatenates the results, enabling the model to learn both fine and coarse features from an image.  
+
+    InceptionV3 incorporates several advanced techniques to improve training and reduce overfitting, including:
+
+    - **Factorized convolutions** to reduce computational cost while maintaining performance  
+    - **Auxiliary classifiers** that provide additional gradient signals during training  
+    - **Batch normalization** to stabilize and accelerate training  
+    - **Label smoothing** to improve generalization  
+
+    Thanks to these innovations, InceptionV3 achieves high accuracy on benchmark datasets such as ImageNet, while keeping computational resources manageable. This makes it a popular choice for real-world applications, including medical imaging, object detection, and visual recognition tasks.
+                
+    </div>
+    """,unsafe_allow_html=True)
+
+    with st.expander("See Full Model Summary"):
+        stream = io.StringIO()
+        vgg16_model.summary(print_fn=lambda x: stream.write(x + "\n"))
+        st.code(stream.getvalue())
+    st.markdown('### Performace')
+
 
 
 
