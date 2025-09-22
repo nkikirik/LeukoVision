@@ -13,6 +13,7 @@ import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 from plotly.subplots import make_subplots
+import pandas as pd
 
 
 st.title('Modeling')
@@ -123,48 +124,99 @@ elif section == "VGG16":
         history_model = pickle.load(f)
 
     # Plot the loss/acc graphs
-    st.markdown(" #### <u>Loss/Accuracy graphs </u>", unsafe_allow_html=True)
-    
-    acc_training = history_model['accuracy']
-    acc_val = history_model['val_accuracy']
+    with st.expander("Loss/Accuracy graphs"):
+        st.markdown(" #### <u>Loss/Accuracy graphs </u>\n" \
+        "Although we do not use the pretrained weights from ImageNet" \
+        ", after 5 epochs, we already have a steep increase in accuracy "
+        "(decrease for loss function), which reaches 90% for both training and validation sets. At the last epochs " \
+        "of our training, we notice that we have reached a plateau, which corresponds to 99% for the training set and " \
+        "98% for the validation set, respectively.", unsafe_allow_html=True)
+        
+        acc_training = history_model['accuracy']
+        acc_val = history_model['val_accuracy']
 
-    loss_training = history_model['loss']
-    loss_val = history_model['val_loss']
+        loss_training = history_model['loss']
+        loss_val = history_model['val_loss']
 
-    # Create subplot grid: 1 row, 2 columns
-    fig = make_subplots(rows=1, cols=2, subplot_titles=("Accuracy", "Loss"))
+        # Create subplot grid: 1 row, 2 columns
+        fig = make_subplots(rows=1, cols=2, subplot_titles=("Loss", "Accuracy"),vertical_spacing=0.6 )
 
-    # First subplot (left)
-    fig.add_trace(
-        go.Scatter(x=np.arange(len(acc_training)+1), y=acc_training, mode="lines+markers", name="Training", line = dict(color='blue')),
-        row=1, col=1)
-    fig.add_trace(
-        go.Scatter(x=np.arange(len(acc_val)+1), y=acc_val, mode="lines+markers", name="Validation", line = dict(color='red')),
-        row=1, col=1)
+        # First subplot (left)
+        fig.add_trace(
+            go.Scatter(x=np.arange(len(loss_training)+1), y=loss_training, mode="lines+markers", name="Training loss", line = dict(color='blue')),
+            row=1, col=1)
+        fig.add_trace(
+            go.Scatter(x=np.arange(len(loss_val)+1), y=loss_val, mode="lines+markers", name="Validation loss", line = dict(color='red')),
+            row=1, col=1)
 
-    # Second subplot (right)
-    fig.add_trace(
-        go.Scatter(x=np.arange(len(loss_training)+1), y=loss_training, mode="lines+markers", name="Training", line=dict(color="blue")),
-        row=1, col=2)
+        # Second subplot (right)
+        fig.add_trace(
+            go.Scatter(x=np.arange(len(acc_training)+1), y=acc_training, mode="lines+markers", name="Training accuracy", line=dict(color="blue")),
+            row=1, col=2)
 
-    fig.add_trace(
-        go.Scatter(x=np.arange(len(loss_val)+1), y=loss_val, mode="lines+markers", name="Validation", line=dict(color="red")),
-        row=1, col=2)
-
-
-    # Layout styling
-    fig.update_layout(
-        title=dict(text="Training Performance", font = dict(color="black"), ),
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        xaxis=dict(title=dict(text = "Epochs", font = dict(color = "black")), tickfont = dict(color="black")),
-        xaxis2=dict(title=dict(text = "Epochs", font = dict(color = "black")), tickfont = dict(color="black")),   # axis for the second subplot
-        yaxis=dict(title=dict(text = "Accuracy", font = dict(color = "black")), tickfont = dict(color="black")),
-        yaxis2=dict(title=dict(text = "Loss", font = dict(color = "black")), tickfont = dict(color="black")))
+        fig.add_trace(
+            go.Scatter(x=np.arange(len(acc_val)+1), y=acc_val, mode="lines+markers", name="Validation laccuracy", line=dict(color="red")),
+            row=1, col=2)
 
 
-     # Display in Streamlit
-    st.plotly_chart(fig, use_container_width=True)
+        # Layout styling
+        fig.update_layout(
+            title=dict(text="Training Performance", font = dict(color="black") ),
+            showlegend = True, 
+            legend=dict( font=dict(size=12,color="black")),
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            xaxis=dict(title=dict(text = "Epochs", font = dict(color = "black")), tickfont = dict(color="black")),
+            xaxis2=dict(title=dict(text = "Epochs", font = dict(color = "black")), tickfont = dict(color="black")),   # axis for the second subplot
+            yaxis=dict(title=dict(text = "Loss", font = dict(color = "black")), tickfont = dict(color="black")),
+            yaxis2=dict(title=dict(text = "Accuracy", font = dict(color = "black")), tickfont = dict(color="black")))
+        
+        fig.update_layout(
+        annotations=[
+            dict(
+                text="Loss",
+                x=0.22, y=1.05, xref="paper", yref="paper",
+                showarrow=False,
+                font=dict(size=18, family="Arial", color="black")
+            ),
+            dict(
+                text="Accuracy",
+                x=0.78, y=1.05, xref="paper", yref="paper",
+                showarrow=False,
+                font=dict(size=18, family="Arial", color="black"))] )
+        
+            # Display in Streamlit
+        st.plotly_chart(fig, use_container_width=True)
+        
+
+    with st.expander("Confusion matrix"):
+        st.markdown(" #### <u> Confusion matrix </u> \n" \
+        " The confusion matrix highlights not only the overall accuracy but also the specific strengths and weaknesses of the" \
+        " model in classifying individual cell types. The most important finding is that all classes were predicted " \
+        "at a rate of 97% or higher, which highlights the consistency of our model across all cell classes.", unsafe_allow_html=True)
+
+        st.image(white_bg('./pages/images/confusion_matrix.png'), caption='Confustion matrix of VGG16',use_container_width=True)
+
+
+    with st.expander("Classification report"):
+        st.markdown(" #### <u> Classification report </u>\n" \
+        "As one can observe, our model achieves excellent results in all four evaluation metrics "
+        "for every cell class, with scores consistently above 97%.", unsafe_allow_html=True)
+
+        dict = {'BAS': [0.98, 1, 0.99, 0.98 ],
+                'EOS': [1,1,1,1],
+                'EBO': [0.97, 1, 0.98, 0.98],
+                'IG' : [0.97, 0.99, 0.97, 0.97],
+                'LYT': [1, 1, 0.99, 0.99],
+                'MON': [0.98, 1, 0.97, 0.97],
+                'NGS': [0.98, 1, 0.99, 0.98],
+                'PLA': [0.99, 1, 1, 1]
+                }
+        df = pd.DataFrame.from_dict(dict, orient='index', columns=['Recall', 'Specificity', 'Precision', 'F1-score'])
+        st.dataframe(df.style.format("{:.2f}"))
+        
+
+
     
     
    
