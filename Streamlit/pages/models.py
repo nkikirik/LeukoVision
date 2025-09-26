@@ -51,7 +51,7 @@ if section == "InceptionV3":
     </div>
     """,unsafe_allow_html=True)
 
-    st.image(white_bg('./pages/images/inception/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
+    st.image(white_bg('./Streamlit/pages/images/inception/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
     model = InceptionV3(weights=None)
     with st.expander("See Full Model Summary"):
         stream = io.StringIO()
@@ -64,15 +64,15 @@ if section == "InceptionV3":
                 </div>
                 """,unsafe_allow_html=True)
     if st.toggle("Show InceptionV3 loss and accuracy plot"):
-        st.image(white_bg('./pages/images/inception/loss_acc.png'), caption='Loss and accruacy plot from InceptionV3 training',use_container_width=True)
+        st.image(white_bg('./Streamlit/pages/images/inception/loss_acc.png'), caption='Loss and accruacy plot from InceptionV3 training',use_container_width=True)
     st.markdown(""" <div style="text-align: justify;">
                 The test set shows a very high accuracy of 98.28% 
                 and that is reflected in the digonal form of the confusion matrix.
                 </div>
                 """,unsafe_allow_html=True)
     if st.toggle("Show InceptionV3 confusion matrix"):
-        st.image(white_bg('./pages/images/inception/cm.png'), caption='Confusion matrix of InceptionV3 test set',use_container_width=True)
-    report = pd.read_csv("./pages/images/inception/class_report.txt", 
+        st.image(white_bg('./Streamlit/pages/images/inception/cm.png'), caption='Confusion matrix of InceptionV3 test set',use_container_width=True)
+    report = pd.read_csv("./Streamlit/pages/images/inception/class_report.txt", 
                      sep="\s+", header=0,
                      names=["Class", "Recall", "Specificity", "Precision", "F1-Score"])
     report.index = report.index + 1
@@ -115,7 +115,7 @@ elif section == "ResNet50":
         ResNet50 became one of the most influential models in deep learning, forming the backbone of many modern architectures. Its ability to combine **depth with stability** makes it highly effective for tasks like blood cell classification.
         </div>
         """,unsafe_allow_html=True)
-    st.image(white_bg('./pages/images/resnet50/resnet50.png'), caption='Architecture diagram of ResNet50',use_container_width=True)
+    st.image(white_bg('./Streamlit/pages/images/resnet50/resnet50.png'), caption='Architecture diagram of ResNet50',use_container_width=True)
     model = ResNet50(weights=None)
     with st.expander("See Full Model Summary"):
         stream = io.StringIO()
@@ -128,15 +128,15 @@ elif section == "ResNet50":
                 </div>
                 """,unsafe_allow_html=True)
     if st.toggle("Show ResNet50 loss and accuracy plot"):
-        st.image(white_bg('./pages/images/resnet50/loss_acc.png'), caption='Loss and accruacy plot from ResNet50 training',use_container_width=True)
+        st.image(white_bg('./Streamlit/pages/images/resnet50/loss_acc.png'), caption='Loss and accruacy plot from ResNet50 training',use_container_width=True)
     st.markdown(""" <div style="text-align: justify;">
                 The test set shows a very high accuracy of 97.63% 
                 and that is reflected in the digonal form of the confusion matrix.
                 </div>
                 """,unsafe_allow_html=True)
     if st.toggle("Show ResNet50 confusion matrix"):
-        st.image(white_bg('./pages/images/resnet50/cm.png'), caption='Confusion matrix of ResNet50 test set',use_container_width=True)
-    report = pd.read_csv("./pages/images/resnet50/class_report.txt", 
+        st.image(white_bg('./Streamlit/pages/images/resnet50/cm.png'), caption='Confusion matrix of ResNet50 test set',use_container_width=True)
+    report = pd.read_csv("./Streamlit/pages/images/resnet50/class_report.txt", 
                      sep="\s+", header=0,
                      names=["Class", "Recall", "Specificity", "Precision", "F1-Score"])
     report.index = report.index + 1
@@ -190,7 +190,7 @@ elif section == "VGG16":
     """,unsafe_allow_html=True)
 
     # Insert image of Vgg16 architecture
-    st.image(white_bg('./pages/images/vgg16/vgg16.png'), caption='Model architecture of VGG16',use_container_width=True)
+    st.image(white_bg('./Streamlit/pages/images/vgg16/vgg16.png'), caption='Model architecture of VGG16',use_container_width=True)
 
     # Show model summary
     inputs=Input(shape=(None,None,3)) # Input layer
@@ -217,7 +217,7 @@ elif section == "VGG16":
 
     #Load the output of the training of the vgg16 model
     # Load the history of the model
-    with open('./history_model_unfrozen_noweights.pkl', 'rb') as f:
+    with open('./Streamlit/history_model_unfrozen_noweights.pkl', 'rb') as f:
         history_model = pickle.load(f)
 
     # Plot the loss/acc graphs
@@ -292,7 +292,7 @@ elif section == "VGG16":
         " model in classifying individual cell types. The most important finding is that all classes were predicted " \
         "at a rate of 97% or higher, which highlights the consistency of our model across all cell classes.", unsafe_allow_html=True)
 
-        st.image(white_bg('./pages/images/vgg16/confusion_matrix.png'), caption='Confustion matrix of VGG16',use_container_width=True)
+        st.image(white_bg('./Streamlit/pages/images/vgg16/confusion_matrix.png'), caption='Confustion matrix of VGG16',use_container_width=True)
 
 
     with st.expander("Classification report"):

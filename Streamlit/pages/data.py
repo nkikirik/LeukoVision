@@ -8,8 +8,8 @@ st.title('Data')
 
 
 # Load data
-cell = np.loadtxt('./pages/count_spanish_german_chinese.txt', usecols=0, dtype=str)
-count = np.loadtxt('./pages/count_spanish_german_chinese.txt', usecols=[1,2,3], dtype=int)
+cell = np.loadtxt('./Streamlit/pages/count_spanish_german_chinese.txt', usecols=0, dtype=str)
+count = np.loadtxt('./Streamlit/pages/count_spanish_german_chinese.txt', usecols=[1,2,3], dtype=int)
 
 # Create a stacked bar chart
 fig = go.Figure()
@@ -42,7 +42,7 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 
-file_path = './pages/count_spanish_german_chinese.txt'
+file_path = './Streamlit/pages/count_spanish_german_chinese.txt'
 df = pd.read_csv(file_path, 
                  sep='\s+',          # whitespace separator
                  header=None,        # no header in file

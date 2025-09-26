@@ -18,11 +18,11 @@ class_names = ['BAS', 'EOS', 'EBO', 'IG', 'LYT', 'MON', 'NGS', 'PLA']
 @st.cache_resource
 # --- Load Models ---
 def load_inception():
-    return torch.load('./inceptionv3.pth', weights_only=False,map_location=torch.device('cpu'))
+    return torch.load('./Streamlit/inceptionv3.pth', weights_only=False,map_location=torch.device('cpu'))
 def load_resnet():
-    return torch.load('./resnet_model.pth', weights_only=False,map_location=torch.device('cpu'))
+    return torch.load('./Streamlit/resnet_model.pth', weights_only=False,map_location=torch.device('cpu'))
 def load_vgg16():
-    return load_model('./vgg16_unfrozen_noweights.keras')
+    return load_model('./Streamlit/vgg16_unfrozen_noweights.keras')
 inception_model = load_inception()
 resnet_model = load_resnet()
 vgg16_model = load_vgg16()
@@ -52,14 +52,14 @@ if selected_model:
 
     # --- Gallery ---
     gallery = {
-        "BAS": ['./gallary/BA_580.jpg','./gallary/BA_19779.jpg','./gallary/BA_20201.jpg'],
-        "EOS": ['./gallary/EO_29763.jpg','./gallary/EO_24568.jpg','./gallary/EO_25085.jpg'],
-        "EBO": ['./gallary/ERB_168152.jpg','./gallary/ERB_170062.jpg','./gallary/ERB_174098.jpg'],
-        "IG": ["./gallary/PMY_901117.jpg",'./gallary/MMY_630078.jpg','./gallary/MY_318125.jpg'],
-        "LYT": ["./gallary/LY_742481.jpg",'./gallary/LY_731097.jpg','./gallary/LY_743393.jpg'],
-        "MON": ["./gallary/MO_849518.jpg",'./gallary/MO_888999.jpg','./gallary/MO_912563.jpg'],
-        "NGS": ["./gallary/SNE_746083.jpg",'./gallary/BNE_378921.jpg','./gallary/SNE_790562.jpg'],
-        "PLA": ["./gallary/PLATELET_969782.jpg",'./gallary/PLATELET_37710.jpg','./gallary/PLATELET_815342.jpg']
+        "BAS": ['./Streamlit/gallary/BA_580.jpg','./Streamlit/gallary/BA_19779.jpg','./Streamlit/gallary/BA_20201.jpg'],
+        "EOS": ['./Streamlit/gallary/EO_29763.jpg','./Streamlit/gallary/EO_24568.jpg','./Streamlit/gallary/EO_25085.jpg'],
+        "EBO": ['./Streamlit/gallary/ERB_168152.jpg','./Streamlit/gallary/ERB_170062.jpg','./Streamlit/gallary/ERB_174098.jpg'],
+        "IG": ["./Streamlit/gallary/PMY_901117.jpg",'./Streamlit/gallary/MMY_630078.jpg','./Streamlit/gallary/MY_318125.jpg'],
+        "LYT": ["./Streamlit/gallary/LY_742481.jpg",'./Streamlit/gallary/LY_731097.jpg','./Streamlit/gallary/LY_743393.jpg'],
+        "MON": ["./Streamlit/gallary/MO_849518.jpg",'./Streamlit/gallary/MO_888999.jpg','./Streamlit/gallary/MO_912563.jpg'],
+        "NGS": ["./Streamlit/gallary/SNE_746083.jpg",'./Streamlit/gallary/BNE_378921.jpg','./Streamlit/gallary/SNE_790562.jpg'],
+        "PLA": ["./Streamlit/gallary/PLATELET_969782.jpg",'./Streamlit/gallary/PLATELET_37710.jpg','./Streamlit/gallary/PLATELET_815342.jpg']
     }
 
     # --- Class Selection ---
