@@ -4,8 +4,7 @@ import sys
 from utils import white_bg
 import io
 import tensorflow as tf
-from keras.applications import InceptionV3 # type: ignore
-from keras.applications import VGG16 # type: ignore
+from keras.applications import InceptionV3,ResNet50,VGG16
 from keras.layers import GlobalAveragePooling2D, Dropout, Dense, Input, Rescaling, Resizing
 from keras.models import Model    
 import plotly.graph_objects as go
@@ -30,10 +29,6 @@ section = option_menu(
     orientation="horizontal",
 )
 
-# section = st.sidebar.radio(
-#     "Choose Section",
-#     ["InceptionV3", "ResNet50", "VGG16"]
-# )
 
 if section == "InceptionV3":
     st.subheader("InceptionV3 🔬")
@@ -56,17 +51,119 @@ if section == "InceptionV3":
     </div>
     """,unsafe_allow_html=True)
 
-    st.image(white_bg('./pages/images/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
+    st.image(white_bg('./pages/images/inception/inceptionv3.png'), caption='Architecture diagram of InceptionV3',use_container_width=True)
     model = InceptionV3(weights=None)
     with st.expander("See Full Model Summary"):
         stream = io.StringIO()
         model.summary(print_fn=lambda x: stream.write(x + "\n"))
         st.code(stream.getvalue())
     st.markdown('### Performace')
+    st.markdown(""" <div style="text-align: justify;">
+    The training accuracy approaches 99.97%, while the validation accuracy reaches 
+    98.29%, demonstrating the model’s strong ability to accurately classify different cell types.
+                </div>
+                """,unsafe_allow_html=True)
+    if st.toggle("Show InceptionV3 loss and accuracy plot"):
+        st.image(white_bg('./pages/images/inception/loss_acc.png'), caption='Loss and accruacy plot from InceptionV3 training',use_container_width=True)
+    st.markdown(""" <div style="text-align: justify;">
+                The test set shows a very high accuracy of 98.28% 
+                and that is reflected in the digonal form of the confusion matrix.
+                </div>
+                """,unsafe_allow_html=True)
+    if st.toggle("Show InceptionV3 confusion matrix"):
+        st.image(white_bg('./pages/images/inception/cm.png'), caption='Confusion matrix of InceptionV3 test set',use_container_width=True)
+    report = pd.read_csv("./pages/images/inception/class_report.txt", 
+                     sep="\s+", header=0,
+                     names=["Class", "Recall", "Specificity", "Precision", "F1-Score"])
+    report.index = report.index + 1
+    numeric_cols = report.select_dtypes(include="number").columns
+    styled = report.style.format({col: "{:.2f}" for col in numeric_cols}) \
+                        .set_properties(**{"text-align": "center"}) \
+                        .set_table_styles([{
+                            "selector": "th",
+                            "props": [("text-align", "center"), ("font-weight", "bold")]
+                        }])
+    st.markdown(""" <div style="text-align: justify;">
+                The classification metrics consistently range between 0.96 and 1.00, 
+                demonstrating that the InceptionV3 model performs exceptionally well in 
+                distinguishing among different WBC subtypes. This highlights both the robustness of 
+                the model and its suitability for automated cell classification tasks.
+                </div>
+                """,unsafe_allow_html=True)
+    if st.toggle("Show classification report"):
+        st.dataframe(styled)
+    
+    
 
+# The key idea behind InceptionV3 is the use of **Inception modules**, which allow the network to capture features at multiple scales simultaneously. Each module applies several convolutions of different sizes in parallel and concatenates the results, enabling the model to learn both fine and coarse features from an image.  
+
+#     InceptionV3 incorporates several advanced techniques to improve training and reduce overfitting, including:
+
+#     - **Factorized convolutions** to reduce computational cost while maintaining performance  
+#     - **Auxiliary classifiers** that provide additional gradient signals during training  
+#     - **Batch normalization** to stabilize and accelerate training  
+#     - **Label smoothing** to improve generalization 
 elif section == "ResNet50":
     st.subheader("ResNet50 🧬")
-    
+    st.markdown("""
+        ### Overview  
+        <div style="text-align: justify;">
+        ResNet50 (Residual Network, 50 layers) is a deep convolutional neural network introduced by Microsoft Research in 2015.  
+         
+        The key innovation in ResNet50 is the **residual block**, which introduces **skip connections** (or shortcuts) that allow the model to "skip" one or more layers. These shortcuts enable the network to directly pass information forward, making it easier to train very deep architectures.  
+ 
+        ResNet50 became one of the most influential models in deep learning, forming the backbone of many modern architectures. Its ability to combine **depth with stability** makes it highly effective for tasks like blood cell classification.
+        </div>
+        """,unsafe_allow_html=True)
+    st.image(white_bg('./pages/images/resnet50/resnet50.png'), caption='Architecture diagram of ResNet50',use_container_width=True)
+    model = ResNet50(weights=None)
+    with st.expander("See Full Model Summary"):
+        stream = io.StringIO()
+        model.summary(print_fn=lambda x: stream.write(x + "\n"))
+        st.code(stream.getvalue())
+    st.markdown('### Performace')
+    st.markdown(""" <div style="text-align: justify;">
+    The training accuracy approaches 99.85%, while the validation accuracy reaches 
+    97.90%, demonstrating the model’s strong ability to accurately classify different cell types.
+                </div>
+                """,unsafe_allow_html=True)
+    if st.toggle("Show ResNet50 loss and accuracy plot"):
+        st.image(white_bg('./pages/images/resnet50/loss_acc.png'), caption='Loss and accruacy plot from ResNet50 training',use_container_width=True)
+    st.markdown(""" <div style="text-align: justify;">
+                The test set shows a very high accuracy of 97.63% 
+                and that is reflected in the digonal form of the confusion matrix.
+                </div>
+                """,unsafe_allow_html=True)
+    if st.toggle("Show ResNet50 confusion matrix"):
+        st.image(white_bg('./pages/images/resnet50/cm.png'), caption='Confusion matrix of ResNet50 test set',use_container_width=True)
+    report = pd.read_csv("./pages/images/resnet50/class_report.txt", 
+                     sep="\s+", header=0,
+                     names=["Class", "Recall", "Specificity", "Precision", "F1-Score"])
+    report.index = report.index + 1
+    numeric_cols = report.select_dtypes(include="number").columns
+    styled = report.style.format({col: "{:.2f}" for col in numeric_cols}) \
+                        .set_properties(**{"text-align": "center"}) \
+                        .set_table_styles([{
+                            "selector": "th",
+                            "props": [("text-align", "center"), ("font-weight", "bold")]
+                        }])
+    st.markdown(""" <div style="text-align: justify;">
+                The classification metrics consistently range between 0.94 and 1.00, 
+                demonstrating that the ResNet50 model performs exceptionally well in 
+                distinguishing among different WBC subtypes. This highlights both the robustness of 
+                the model and its suitability for automated cell classification tasks.
+                </div>
+                """,unsafe_allow_html=True)
+    if st.toggle("Show classification report"):
+        st.dataframe(styled)
+
+
+
+#It was designed to address the **vanishing gradient problem** that arises when training very deep networks. 
+# - **Depth:** 50 layers  
+# - **Architecture:** Built from convolutional layers, batch normalization, ReLU activations, and residual blocks with skip connections  
+# - **Strengths:** Efficient training of very deep networks, strong feature extraction, widely adopted in computer vision tasks  
+# - **Applications:** Image classification, object detection, medical imaging, and transfer learning in many domains 
 
 elif section == "VGG16":
     st.subheader("VGG16 🧪")
@@ -93,7 +190,7 @@ elif section == "VGG16":
     """,unsafe_allow_html=True)
 
     # Insert image of Vgg16 architecture
-    st.image(white_bg('./pages/images/vgg16.png'), caption='Model architecture of VGG16',use_container_width=True)
+    st.image(white_bg('./pages/images/vgg16/vgg16.png'), caption='Model architecture of VGG16',use_container_width=True)
 
     # Show model summary
     inputs=Input(shape=(None,None,3)) # Input layer
@@ -195,7 +292,7 @@ elif section == "VGG16":
         " model in classifying individual cell types. The most important finding is that all classes were predicted " \
         "at a rate of 97% or higher, which highlights the consistency of our model across all cell classes.", unsafe_allow_html=True)
 
-        st.image(white_bg('./pages/images/confusion_matrix.png'), caption='Confustion matrix of VGG16',use_container_width=True)
+        st.image(white_bg('./pages/images/vgg16/confusion_matrix.png'), caption='Confustion matrix of VGG16',use_container_width=True)
 
 
     with st.expander("Classification report"):
